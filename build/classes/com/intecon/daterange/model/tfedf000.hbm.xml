@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"https://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.intecon.daterange.model.Tfedf000" table="tfedf000">
+     <id name="comp" type="int">
+         <column name="COMP" />
+         <generator class="increment" />
+     </id>
+     <property name = "kunv" column = "KUNV" type = "string"/>
+     <property name = "edef" column = "EDEF" type = "string"/>
+    </class>
+</hibernate-mapping>
