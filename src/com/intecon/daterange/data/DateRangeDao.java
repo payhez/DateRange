@@ -15,16 +15,12 @@ public class DateRangeDao {
 								.configure()
 								.addAnnotatedClass(Tfeft000.class)
 								.addAnnotatedClass(Tfedf000.class)
-								//.addAnnotatedClass(QueriedObject.class)
 								.buildSessionFactory();
 	
 	Session session = factory.getCurrentSession();
 	
 	
 	public List<Object> fetch(String startDate, String endDate) {
-		
-		System.out.println("Start:"+startDate);
-		System.out.println("End:"+endDate);
 
 		
 		List<Object> objectList = new ArrayList<>();

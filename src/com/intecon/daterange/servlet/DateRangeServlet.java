@@ -56,29 +56,11 @@ public class DateRangeServlet extends HttpServlet {
 		
 		try {
 				
-			List<Object> objectList = new ArrayList<>();
-			
-			objectList =service.fetch(date.getStartDate(), date.getEndDate());
-			
-			Iterator itr = objectList.iterator();
 			List<QueriedObject> queriedObjectList = new ArrayList<>();
 			
-			while(itr.hasNext()){
-			   Object[] obj = (Object[]) itr.next();
-			   //now you have one array of Object for each row
-			   String edef = String.valueOf(obj[0]);
-			   String aspTaxId = String.valueOf(obj[1]);
-			   Integer comp = Integer.parseInt(String.valueOf(obj[2]));
-			   String kunv = String.valueOf(obj[3]);
-			   Integer countAspTaxId = Integer.parseInt(String.valueOf(obj[4]));
-			   String invstat = String.valueOf(obj[5]);
-			   QueriedObject theObject = new QueriedObject(edef, aspTaxId, comp, kunv, countAspTaxId, invstat);
-			   queriedObjectList.add(theObject);
-			   //same way for all obj[2], obj[3], obj[4]
-			}
-			json=gson.toJson(queriedObjectList);
+			queriedObjectList = service.fetch(date.getStartDate(), date.getEndDate());
 			
-			System.out.println(json);
+			json=gson.toJson(queriedObjectList);
 			
 			response.setContentType("application/json");
 		    response.setCharacterEncoding("UTF-8");
