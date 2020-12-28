@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -17,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.intecon.daterange.service.DateRangeService;
-import com.intecon.daterange.model.DateObject;
+import com.intecon.daterange.dto.DateObject;
 import com.intecon.daterange.model.QueriedObject;
 
 /**
@@ -52,13 +51,13 @@ public class DateRangeServlet extends HttpServlet {
 			json_req = br.readLine();
 		}
 		
-		DateObject date = gson.fromJson(json_req, DateObject.class);
+		DateObject requestedDates = gson.fromJson(json_req, DateObject.class);
 		
 		try {
 				
 			List<QueriedObject> queriedObjectList = new ArrayList<>();
 			
-			queriedObjectList = service.fetch(date.getStartDate(), date.getEndDate());
+			queriedObjectList = service.fetch(requestedDates.getStartDate(), requestedDates.getEndDate());
 			
 			json=gson.toJson(queriedObjectList);
 			

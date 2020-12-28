@@ -23,8 +23,8 @@
 
 		<!-- Set the current session context -->
 		<property name="current_session_context_class">thread</property>
-		<mapping resource="com/intecon/daterange/model/tfedf000.hbm.xml"/>
-		<mapping resource="com/intecon/daterange/model/tfeft000.hbm.xml"/>
+		<mapping resource="com/intecon/daterange/model/Tfedf000.hbm.xml"/>
+		<mapping resource="com/intecon/daterange/model/Tfeft000.hbm.xml"/>
  
     </session-factory>
     

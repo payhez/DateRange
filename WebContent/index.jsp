@@ -8,41 +8,47 @@
 	<link rel="stylesheet" href="global/css/jquery.dataTables.min.css" />
 	<link href="global/css/gijgo.min.css" rel="stylesheet" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-	
+    
 	<script src="global/js/jquery-3.5.1.js"></script>
 	<script src="global/js/jquery.dataTables.min.js"></script>
 	<script src="global/js/bootstrap.min.js"></script>
-    <script src="global/js/gijgo.min.js"></script>
+    <script src="global/js/gijgo.min.js" type="text/javascript"></script>
+  	<script src="https://unpkg.com/gijgo@1.9.13/js/messages/messages.tr-tr.js" type="text/javascript"></script>
     
 </head>
 <body>
 	<br>
-    <div class="container">
-        Baslangic Tarihi: <input id="startDate" width="276" /> 
+    <div class="container" style="text-align: -webkit-center;">
+        <b>Baslangic Tarihi:</b> <input id="startDate" width="276" />
         <br>
-        Bitis Tarihi: <input id="endDate" width="276" />
+        <b>Bitis Tarihi:</b> <input id="endDate" width="276" />
     </div>
     <br>
-    <table id="table" class="display" style="width:100%">
-        <thead>
-            <tr>
-                <th>E-Defter</th>
-                <th>Vergi Kodu</th>
-                <th>Sirket Kodu</th>
-                <th>Sirket Adi</th>
-                <th>Sayi</th>
-                <th>Invstat</th>
-            </tr>
-        </thead>
-    </table>	
+    <div class="container" style="background: whitesmoke;">
+    	<br>
+	    <table id="table" class="display" style="width:100%">
+	        <thead>
+	            <tr>
+	                <th>Yetkili</th>
+	                <th>Vergi Kodu</th>
+	                <th>Sirket Kodu</th>
+	                <th>Sirket Adi</th>
+	                <th>Sayi</th>
+	                <th>Durum</th>
+	            </tr>
+	        </thead>
+	    </table>
+	 </div>	
 </body>
 </html>
 <script>
 
-	var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-	
+	var today = new Date();
+	var defaultStartDate = new Date(2000, 1, 1);
 	
 	$('#startDate').datepicker({
+		locale : 'tr-tr',
+		format: 'yyyy-mm-dd',
 	    uiLibrary: 'bootstrap4',
 	    iconsLibrary: 'fontawesome',
 	    maxDate: function () {
@@ -51,6 +57,8 @@
 	});
 	
 	$('#endDate').datepicker({
+		locale : 'tr-tr',
+		format: 'yyyy-mm-dd',
 	    uiLibrary: 'bootstrap4',
 	    iconsLibrary: 'fontawesome',
 	    minDate: function () {
@@ -58,29 +66,29 @@
 	    }
 	});
 	
-	
-	var dt=null;
+	var dt= null; // Datatable is created
   	 
 	$(document).ready(function() {
 		
-		$('#startDate').val(new Date(1970, 1, 1));
-	    $('#endDate').val(today);
-		
+		$('#startDate').val(defaultStartDate.getFullYear()+"-"+defaultStartDate.getMonth()+"-"+defaultStartDate.getDate()); // Default start date is set to (1.1.2000)
+	    $('#endDate').val(today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate()); // Default end date is set to recent date
+	    
+	    
 		load_table();
 		
 		function load_table(){
-			var jsonreq = new Object();
-	        jsonreq.startDate=formatDate($("#startDate").val());
-	     	jsonreq.endDate=formatDate($("#endDate").val());
-			sendAjax(jsonreq);
+			var theRequestedDates = new Object(); // An object with startDate and endDate attributes
+			theRequestedDates.startDate=$("#startDate").val();
+			theRequestedDates.endDate=$("#endDate").val();
+			sendAjax(theRequestedDates);
 		}
 		
-		function sendAjax(jsonreq){
+		function sendAjax(theRequestedDates){
 			$.ajax({
 			    url: "${pageContext.request.contextPath}/DateRangeServlet",
 			    type: "POST",
 			    dataType: "json",
-			    data: JSON.stringify(jsonreq),
+			    data: JSON.stringify(theRequestedDates),
 			    contentType: "application/json",
 			    mimeType: 'application/json',
 			    async: true,
@@ -89,7 +97,7 @@
 		    		if(dt==null){
 			    		dt = $('#table').DataTable( {	
 			    			"language": {
-			                    "url": "//cdn.datatables.net/plug-ins/1.10.22/i18n/Turkish.json"
+			                    "url": "global/Turkish.json"
 			                },
 			        		data:data,
 			        		columns: [
@@ -103,10 +111,9 @@
 			                   order: [[1, 'asc']]
 			        	});
 		    		}else{
-		    			dt.clear().draw();
+		    			dt.clear();
 		    			dt.rows.add(data); // Add new data
 		    			dt.columns.adjust().draw(); // Redraw the DataTable
-		    			return false;
 		    		}
 			    }
 			});
@@ -117,18 +124,4 @@
 	    	load_table();
 	    } );
 	} );
-	
-	function formatDate(date) {
-	    var d = new Date(date),
-	        month = '' + (d.getMonth() + 1),
-	        day = '' + d.getDate(),
-	        year = d.getFullYear();
-	
-	    if (month.length < 2) 
-	        month = '0' + month;
-	    if (day.length < 2) 
-	        day = '0' + day;
-	
-	    return [year, month, day].join('-');
-	}	
 </script>

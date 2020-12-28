@@ -1,4 +1,4 @@
-package com.intecon.daterange.model;
+package com.intecon.daterange.dto;
 
 public class DateObject {
 	

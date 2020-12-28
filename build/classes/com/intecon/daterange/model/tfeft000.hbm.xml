@@ -4,7 +4,7 @@
 "https://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="com.intecon.daterange.model.Tfeft000" table="tfeft000">
+	<class name="com.intecon.daterange.model.Tfeft000" table="Tfeft000">
      <id name="idx" type="int">
          <column name="Idx" />
          <generator class="increment" />
